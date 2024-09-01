@@ -1,6 +1,6 @@
 受講生管理システムDB
   受講生情報
-    CRATE TABLE IF NOT EXISTS students
+    CREATE TABLE IF NOT EXISTS students
     (
       id VARCHAR(36) PRIMARY KEY,
       name VARCHAR(50) NOT NULL,
@@ -13,7 +13,7 @@
     );
 
   受講生コース情報
-    CRATE TABLE IF NOT EXISTS students_courses
+    CREATE TABLE IF NOT EXISTS students_courses
         (
           id VARCHAR(36) PRIMARY KEY,
           student_id VARCHAR(36) NOT NULL,

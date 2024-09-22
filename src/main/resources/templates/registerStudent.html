@@ -11,6 +11,34 @@
         <input type="text" id="name" th:field="*{student.name}" required />
     </div>
     <div>
+        <label for="kanaName">カナ名</label>
+        <input type="text" id="kanaName" th:field="*{student.kanaName}" required />
+    </div>
+    <div>
+        <label for="nickname">ニックネーム</label>
+        <input type="text" id="nickname" th:field="*{student.nickname}" required />
+    </div>
+    <div>
+        <label for="email">メールアドレス</label>
+        <input type="text" id="email" th:field="*{student.email}" required />
+    </div>
+    <div>
+        <label for="area">地域</label>
+        <input type="text" id="area" th:field="*{student.area}" required />
+    </div>
+    <div>
+        <label for="age">年齢</label>
+        <input type="text" id="age" th:field="*{student.age}" />
+    </div>
+    <div>
+        <label for="sex">性別</label>
+        <input type="text" id="sex" th:field="*{student.sex}" />
+    </div>
+    <div>
+        <label for="remark">備考</label>
+        <input type="text" id="remark" th:field="*{student.remark}" />
+    </div>
+    <div>
         <button type="submit">登録</button>
     </div>
 </form>

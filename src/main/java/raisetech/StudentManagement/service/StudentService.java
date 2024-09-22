@@ -2,8 +2,10 @@ package raisetech.StudentManagement.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentsCourses;
+import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.repository.StudentRepository;
 
 import java.util.List;
@@ -33,5 +35,11 @@ public class StudentService {
         // 抽出したリストをコントローラーに返す
 
         return repository.searchStudentsCourses();
+    }
+
+    @Transactional
+    public void registerStudent(StudentDetail studentDetail) {
+        repository.registerStudent(studentDetail.getStudent());
+        // TODO:コース情報登録も行う
     }
 }

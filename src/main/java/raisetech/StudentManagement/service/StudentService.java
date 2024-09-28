@@ -8,7 +8,6 @@ import raisetech.StudentManagement.data.StudentsCourses;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.repository.StudentRepository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,21 +21,23 @@ public class StudentService {
         this.repository = repository;
     }
 
-    public List<Student> seachStudentList() {
-        // 検索処理
-        repository.search();
-
-        // 絞り込みをする。年齢が30代の人のみ抽出する。
-        // 抽出したリストをコントローラーに返す
-
+    public List<Student> searchStudentList() {
         return repository.search();
+    }
+
+    public StudentDetail searchStudent(String id) {
+        Student student = repository.searchStudent(id);
+        List<StudentsCourses> studentsCourses = repository.searchStudentsCourses(student.getId());
+        StudentDetail studentDetail = new StudentDetail();
+        studentDetail.setStudent(student);
+        studentDetail.setStudentsCourses(studentsCourses);
+        return studentDetail;
     }
 
     public List<StudentsCourses> seachStudentsCourseList() {
         // 絞り込み検索で「Javaコース」のコース情報のみ抽出する。
         // 抽出したリストをコントローラーに返す
-
-        return repository.searchStudentsCourses();
+        return repository.searchStudentsCoursesList();
     }
 
     @Transactional
@@ -49,6 +50,13 @@ public class StudentService {
             studentsCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
             repository.registerStudentCourses(studentsCourse);
         }
+    }
 
+    @Transactional
+    public void updateStudent(StudentDetail studentDetail) {
+        repository.updateStudent(studentDetail.getStudent());
+        for(StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
+            repository.updateStudentCourses(studentsCourse);
+        }
     }
 }

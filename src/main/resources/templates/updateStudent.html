@@ -42,10 +42,14 @@
         <label for="remark">備考</label>
         <input type="text" id="remark" th:field="*{student.remark}" />
     </div>
+    <div>
+        <label for="isDeleted">キャンセル</label>
+        <input type="checkbox" id="isDeleted" th:field="*{student.deleted}" /> <!- 本来は「deleted」ではなく「isDeleted」Javaの歴史問題もありLombackがうまくゲッターを作れず-->
+    </div>
     <div th:each="course, stat : *{studentsCourses}">
         <label for="id"
                th:for="studentCourse.__${stat.index}__.courseName">受講コースID： </label>
-        <input type="text" id="id" th:id="studentCourse.__${stat.index}__.id"
+        <input type="text" id="studentCourseId" th:id="studentCourse.__${stat.index}__.id"
                th:field="*{studentsCourses[__${stat.index}__].id}" />
         <label for="courseName"
                th:for="studentCourse.__${stat.index}__.courseName">受講コース名： </label>

@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface StudentRepository {
 
-    @Select("SELECT * FROM students WHERE is_deleted = false")
+    @Select("SELECT * FROM students") //WHERE is_deleted = false
     List<Student> search();
 
     @Select("SELECT * FROM students WHERE id = #{id}")
@@ -33,7 +33,7 @@ public interface StudentRepository {
     void registerStudent(Student student);
 
     @Insert("INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at)"
-        + "VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})")
+            + "VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void registerStudentCourses(StudentsCourses studentsCourses);
 
@@ -42,6 +42,6 @@ public interface StudentRepository {
     void updateStudent(Student student);
 
     @Update("UPDATE students_courses SET course_name = #{courseName} WHERE id = #{id}")
-    void updateStudentCourses(StudentsCourses studentsCourses);
+    void updateStudentsCourses(StudentsCourses studentsCourses);
 
 }

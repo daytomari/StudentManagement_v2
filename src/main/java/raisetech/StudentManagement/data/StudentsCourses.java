@@ -3,7 +3,6 @@ package raisetech.StudentManagement.data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter

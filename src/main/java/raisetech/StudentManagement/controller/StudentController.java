@@ -1,6 +1,7 @@
 package raisetech.StudentManagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -63,12 +64,18 @@ public class StudentController {
     }
 
     @PostMapping("/updateStudent")
-    public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
-        if (result.hasErrors()) {
-            return "updateStudent";
-        }
+    public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
         service.updateStudent(studentDetail);
-        return "redirect:/studentList";
+        return ResponseEntity.ok("更新処理が成功しました。");
     }
+
+//    @PostMapping("/updateStudent")
+//    public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
+//        if (result.hasErrors()) {
+//            return "updateStudent";
+//        }
+//        service.updateStudent(studentDetail);
+//        return "redirect:/studentList";
+//    }
 
 }

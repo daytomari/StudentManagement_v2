@@ -15,7 +15,7 @@ import raisetech.StudentManagement.service.StudentService;
 import java.util.Arrays;
 import java.util.List;
 
-@RestController
+@RestController //Rest化 ※Controller→ResController
 public class StudentController {
 
     private StudentService service;
@@ -35,10 +35,8 @@ public class StudentController {
     }
 
     @GetMapping("/student/{id}")
-    public String getStudent(@PathVariable String id, Model model) {
-        StudentDetail studentDetail = service.searchStudent(id);
-        model.addAttribute("studentDetail", studentDetail);
-        return "updateStudent";
+    public StudentDetail getStudent(@PathVariable String id) {
+        return service.searchStudent(id);
     }
 
 //    @GetMapping("/studentsCourseList")
@@ -46,21 +44,18 @@ public class StudentController {
 //        return service.seachStudentsCourseList();
 //    }
 
-    @GetMapping("/newStudent")
-    public String newStudent(Model model) {
-        StudentDetail studentDetail = new StudentDetail();
-        studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
-        model.addAttribute("studentDetail", studentDetail);
-        return "registerStudent";
-    }
+//    @GetMapping("/newStudent") //Rest化に伴いPOSTMAN登録後に削除
+//    public String newStudent(Model model) {
+//        StudentDetail studentDetail = new StudentDetail();
+//        studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
+//        model.addAttribute("studentDetail", studentDetail);
+//        return "registerStudent";
+//    }
 
     @PostMapping("/registerStudent")
-    public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
-        if (result.hasErrors()) {
-            return "registerStudent";
-        }
-        service.registerStudent(studentDetail);
-        return "redirect:/studentList";
+    public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
+        StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
+        return ResponseEntity.ok(responseStudentDetail);
     }
 
     @PostMapping("/updateStudent")

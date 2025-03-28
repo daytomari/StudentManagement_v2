@@ -27,7 +27,8 @@ public interface StudentRepository {
 //    @Delete("DELETE FROM student WHERE name = #{name}")
 //    void deleteStudent(String name);
 
-    @Insert("INSERT INTO students(name, kana_name, nickname, email, area, age, sex, remark, is_deleted)"
+    @Insert(
+            "INSERT INTO students(name, kana_name, nickname, email, area, age, sex, remark, is_deleted)"
             + "VALUES(#{name}, #{kanaName}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void registerStudent(Student student);

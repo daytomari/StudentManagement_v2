@@ -15,25 +15,42 @@ import raisetech.StudentManagement.service.StudentService;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 受講生の検索や登録、更新などを行うREST APIとして実行されるControllerです。
+ */
 @RestController //Rest化 ※Controller→ResController
 public class StudentController {
 
     private StudentService service;
-    private StudentConverter converter;
 
+    /**
+     * コンストラクタ
+     *
+     * @param service 受講性サービス
+     */
     @Autowired
-    public StudentController(StudentService service, StudentConverter converter) {
+    public StudentController(StudentService service) {
         this.service = service;
-        this.converter = converter;
     }
 
+    /**
+     * 受講生一覧検索です。
+     * 全件検索を行なうので、条件指定は行いません。
+     *
+     * @return 受講生一覧（全件）
+     */
     @GetMapping("/studentList")
     public List<StudentDetail> getStudentList() {
-        List<Student> students = service.searchStudentList();
-        List<StudentsCourses> studentsCourses = service.seachStudentsCourseList();
-        return converter.convertStudentDetails(students, studentsCourses);
+        return service.searchStudentList();
     }
 
+    /**
+     * 受講生検索です。
+     * IDに基づく任意の受講生の情報を取得します。
+     *
+     * @param id 受講生ID
+     * @return 受講生
+     */
     @GetMapping("/student/{id}")
     public StudentDetail getStudent(@PathVariable String id) {
         return service.searchStudent(id);
@@ -44,7 +61,7 @@ public class StudentController {
 //        return service.seachStudentsCourseList();
 //    }
 
-//    @GetMapping("/newStudent") //Rest化に伴いPOSTMAN登録後に削除
+//    @GetMapping("/newStudent") //第38回 Rest化に伴いPOSTMAN登録後に削除
 //    public String newStudent(Model model) {
 //        StudentDetail studentDetail = new StudentDetail();
 //        studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));

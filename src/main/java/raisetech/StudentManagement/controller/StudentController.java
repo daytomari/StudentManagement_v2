@@ -69,12 +69,24 @@ public class StudentController {
 //        return "registerStudent";
 //    }
 
+    /**
+     * 受講生詳細の登録を行います。
+     *
+     * @param studentDetail 受講生詳細
+     * @return 実行結果
+     */
     @PostMapping("/registerStudent")
     public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
         StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
         return ResponseEntity.ok(responseStudentDetail);
     }
 
+    /**
+     * 受講生詳細の更新を行います。 キャンセルフラグの更新もここで行います（論理削除）
+     *
+     * @param studentDetail 受講生詳細
+     * @return 実行結果
+     */
     @PostMapping("/updateStudent")
     public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
         service.updateStudent(studentDetail);

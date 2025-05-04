@@ -60,6 +60,12 @@ public class StudentService {
 //        return repository.searchStudentsCoursesList();
 //    }
 
+    /**
+     * 受講生詳細の登録を行います。 受講生と受講生コース情報を個別に登録し、受講生コース情報には受講生情報を紐づける値とコース開始日、コース終了日を設定します。
+     *
+     * @param studentDetail 受講生詳細
+     * @return 登録情報を付与した受講生詳細
+     */
     @Transactional
     public StudentDetail registerStudent(StudentDetail studentDetail) {
         repository.registerStudent(studentDetail.getStudent());
@@ -72,6 +78,11 @@ public class StudentService {
         return studentDetail;
     }
 
+    /**
+     * 受講生詳細の更新を行います。 受講生と受講生コース情報をそれぞれ更新します。
+     *
+     * @param studentDetail 受講生詳細
+     */
     @Transactional
     public void updateStudent(StudentDetail studentDetail) {
         repository.updateStudent(studentDetail.getStudent());

@@ -2,17 +2,10 @@ package raisetech.StudentManagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import raisetech.StudentManagement.controller.converter.StudentConverter;
-import raisetech.StudentManagement.data.Student;
-import raisetech.StudentManagement.data.StudentsCourses;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.service.StudentService;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,10 +27,10 @@ public class StudentController {
     }
 
     /**
-     * 受講生一覧検索です。
+     * 受講生詳細の一覧検索です。
      * 全件検索を行なうので、条件指定は行いません。
      *
-     * @return 受講生一覧（全件）
+     * @return 受講生詳細一覧（全件）
      */
     @GetMapping("/studentList")
     public List<StudentDetail> getStudentList() {
@@ -45,7 +38,7 @@ public class StudentController {
     }
 
     /**
-     * 受講生検索です。
+     * 受講生詳細の検索です。
      * IDに基づく任意の受講生の情報を取得します。
      *
      * @param id 受講生ID
@@ -87,7 +80,7 @@ public class StudentController {
      * @param studentDetail 受講生詳細
      * @return 実行結果
      */
-    @PostMapping("/updateStudent")
+    @PutMapping("/updateStudent")
     public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
         service.updateStudent(studentDetail);
         return ResponseEntity.ok("更新処理が成功しました。");

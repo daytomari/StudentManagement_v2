@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
-import raisetech.StudentManagement.data.StudentsCourses;
+import raisetech.StudentManagement.data.StudentCourse;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.repository.StudentRepository;
 
@@ -29,28 +29,28 @@ public class StudentService {
     }
 
     /**
-     * 受講生一覧検索です。
+     * 受講生詳細の一覧検索です。
      * 全件検索を行うので、条件指定は行いません。
      *
-     * @return 受講生一覧（全件）
+     * @return 受講生詳細一覧（全件）
      */
     public List<StudentDetail> searchStudentList() {
         List<Student> studentList = repository.search();
-        List<StudentsCourses> studentsCoursesList = repository.searchStudentsCoursesList();
-        return converter.convertStudentDetails(studentList, studentsCoursesList);
+        List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
+        return converter.convertStudentDetails(studentList, studentCourseList);
     }
 
     /**
-     * 受講生検索です。
+     * 受講生詳細検索です。
      * IDに紐づく受講生情報を取得した後、その受講生に紐づく受講生コース情報を取得して設定します。
      *
      * @param id 受講生ID
-     * @return 受講生
+     * @return 受講生詳細
      */
     public StudentDetail searchStudent(String id) {
         Student student = repository.searchStudent(id);
-        List<StudentsCourses> studentsCourses = repository.searchStudentsCourses(student.getId());
-        return new StudentDetail(student, studentsCourses);
+        List<StudentCourse> studentCourse = repository.searchStudentCourse(student.getId());
+        return new StudentDetail(student, studentCourse);
     }
 
 // 第38回 リファクタリングの際に削除
@@ -68,14 +68,26 @@ public class StudentService {
      */
     @Transactional
     public StudentDetail registerStudent(StudentDetail studentDetail) {
-        repository.registerStudent(studentDetail.getStudent());
-        for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
-            studentsCourse.setStudentId(studentDetail.getStudent().getId());
-            studentsCourse.setCourseStartAt(LocalDateTime.now());
-            studentsCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
-            repository.registerStudentCourses(studentsCourse);
-        }
+        Student student = studentDetail.getStudent();
+        repository.registerStudent(student);
+        studentDetail.getStudentCourseList().forEach(studentCourse -> {
+            initStudentsCourse(studentCourse, student);
+            repository.registerStudentCourse(studentCourse);
+        });
         return studentDetail;
+    }
+
+    /**
+     * 受講生コース情報を登録する際の初期情報を設定する
+     * @param studentCourse　受講生コース情報
+     * @param student　受講生
+     */
+    private static void initStudentsCourse(StudentCourse studentCourse, Student student) {
+        LocalDateTime now = LocalDateTime.now();
+
+        studentCourse.setStudentId(student.getId());
+        studentCourse.setCourseStartAt(now);
+        studentCourse.setCourseEndAt(now.plusYears(1));
     }
 
     /**
@@ -86,8 +98,7 @@ public class StudentService {
     @Transactional
     public void updateStudent(StudentDetail studentDetail) {
         repository.updateStudent(studentDetail.getStudent());
-        for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
-            repository.updateStudentsCourses(studentsCourse);
-        }
+        studentDetail.getStudentCourseList()
+                .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));
     }
 }
